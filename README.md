@@ -49,33 +49,65 @@ docker run -e PORT=8000 -p 8000:8000 ngocminhta/hustack-ai-detective:latest
 ### POST `/classify`
 
 - **Description:**  
-  Classifies the provided source code to determine its origin and optionally identifies the AI model family if in advanced mode.
+  Classifies a list of source code snippets to determine whether they are human-written or AI-generated. In advanced mode, it can also identify the AI model family for AI-generated code.
 
 - **Request Body (JSON):**
-
+ 
 ```json
 {
-  "code": "your code here",
-  "language": "Python",  // Options: C, C++, Java, Python
-  "mode": "normal"       // or "advanced"
+  "code": [
+    "first code snippet here",
+    "second code snippet here"
+  ],
+  "language": [
+    "Python", 
+    "C++"
+  ],
+  "mode": "normal"  // or "advanced"
 }
 ```
+
+  - `code`: A list of source code strings.
+  - `language`: A list of corresponding programming languages (must match the length of the `code` list). Supported values: `"C"`, `"C++"`, `"Java"`, `"Python"`.
+  - `mode`: Optional. `"normal"` (default) or `"advanced"`.
 
 - **Response:**
-  - **Normal Mode:** Returns the source type:
+  - **Normal Mode:**
 
 ```json
 {
-  "source": "Human"  // or "AI"
+  "results": [
+    {"source": "Human"},
+    {"source": "AI"}
+  ]
 }
 ```
 
-  - **Advanced Mode:** If the code is detected as AI-generated, returns the AI model family:
+  - **Advanced Mode:**
 
 ```json
 {
-  "source": "AI",
-  "ai_model": "GPT Family"  // as detected by the model
+  "results": [
+    {"source": "Human"},
+    {"source": "AI", "ai_model": "GPT Family"}
+  ]
+}
+```
+
+- **Error Responses:**
+  - Missing or invalid code list:
+
+```json
+{
+  "error": "No code list provided."
+}
+```
+
+  - Mismatched lengths of code and language lists:
+ 
+```json
+{
+  "error": "Language list must match code list length."
 }
 ```
 

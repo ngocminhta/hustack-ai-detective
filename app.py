@@ -63,29 +63,35 @@ def process_result_detection_tab(code, language):
 @app.route('/classify', methods=['POST'])
 async def classify(request: Request):
     data = await request.json()
-    code = data.get("code", "")
-    language = data.get("language", "")
+    
+    code_list = data.get("code", [])
+    language_list = data.get("language", [])
     mode = data.get("mode", "normal").lower()
 
-    if not code:
-        return JSONResponse(content={"error": "No code provided."}, status_code=400)
-    elif not language:
-        return JSONResponse(content={"error": "No language provided."}, status_code=400)
+    if not isinstance(code_list, list) or not code_list:
+        return JSONResponse(content={"error": "No code list provided."}, status_code=400)
+    elif not isinstance(language_list, list) or len(code_list) != len(language_list):
+        return JSONResponse(content={"error": "Language list must match code list length."}, status_code=400)
 
-    cleaned_code = clean_code(code, language)
+    results = []
 
-    ai_result = ai_detector(cleaned_code)[0]
-    ai_label = ai_result['label']
-    model_result = model_detector(cleaned_code)[0]
-    model_label = model_result['label']
-    
-    source = AI_LABELS.get(ai_label, ai_label)
-    result = {"source": source}
+    for code, language in zip(code_list, language_list):
+        cleaned_code = clean_code(code, language)
 
-    if mode == "advanced" and source == "AI":
-        result["ai_model"] = MODEL_LABELS.get(model_label, model_label)
+        ai_result = ai_detector(cleaned_code)[0]
+        ai_label = ai_result["label"]
+        source = AI_LABELS.get(ai_label, ai_label)
 
-    return JSONResponse(content=result)
+        result_item = {"source": source}
+
+        if mode == "advanced" and source == "AI":
+            model_result = model_detector(cleaned_code)[0]
+            model_label = model_result["label"]
+            result_item["ai_model"] = MODEL_LABELS.get(model_label, model_label)
+
+        results.append(result_item)
+
+    return JSONResponse(content={"results": results})
 
 
 def get_readme_html():
