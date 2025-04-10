@@ -13,11 +13,6 @@ HUSTack-AI Detective is an API built with FastAPI and Gradio designed to analyze
 This project is distributed as a Docker image. You will need Docker installed on your system to run the application.
 
 - **Docker:** Install Docker on your machine. Follow the instructions at the [Docker documentation](https://docs.docker.com/get-docker/) for your specific operating system.
-- **Docker image:**
-```sh
-docker pull ngocminhta/hustack-ai-detective:latest
-docker run -e PORT=8000 ngocminhta/hustack-ai-detective:latest
-```
 - **Model Files:** The Docker image includes the required dependencies. However, ensure that the directories `./ai-detector` and `./model-detector` (mounted appropriately) contain the necessary text-classification models (compatible with Hugging Face Transformers).
 
 ## Installation
@@ -25,8 +20,8 @@ docker run -e PORT=8000 ngocminhta/hustack-ai-detective:latest
 **Step 1. Clone the Repository:**
 
 ```sh
-git clone <repository-url>
-cd <repository-directory>
+git clone https://github.com/ngocminhta/hustack-ai-detective
+cd hustack-ai-detective
 ```
 
 **Step 2. Build the Docker Image:**
@@ -35,10 +30,16 @@ cd <repository-directory>
 docker build -t hustack-ai-detective .
 ```
 
+or you can pull from Docker Hub:
+
+```sh
+docker pull ngocminhta/hustack-ai-detective:latest
+```
+
 **Step 3. Running the Docker Container:**
 
 ```sh
-docker run -p 8000:8000 hustack-ai-detective
+docker run -e PORT=8000 -p 8000:8000 ngocminhta/hustack-ai-detective:latest
 ```
 
    The API will be accessible at `http://localhost:8000`.
