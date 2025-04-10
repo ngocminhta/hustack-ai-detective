@@ -55,9 +55,9 @@ docker run -e PORT=8000 -p 8000:8000 ngocminhta/hustack-ai-detective:latest
 
 ```json
 {
-"code": "your code here",
-"language": "Python",  // Options: C, C++, Java, Python
-"mode": "normal"       // or "advanced"
+  "code": "your code here",
+  "language": "Python",  // Options: C, C++, Java, Python
+  "mode": "normal"       // or "advanced"
 }
 ```
 
