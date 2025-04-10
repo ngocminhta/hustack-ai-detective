@@ -16,6 +16,7 @@ This project is distributed as a Docker image. You will need Docker installed on
 - **Docker image:**
 ```sh
 docker pull ngocminhta/hustack-ai-detective:latest
+docker run -e PORT=8000 ngocminhta/hustack-ai-detective:latest
 ```
 - **Model Files:** The Docker image includes the required dependencies. However, ensure that the directories `./ai-detector` and `./model-detector` (mounted appropriately) contain the necessary text-classification models (compatible with Hugging Face Transformers).
 
