@@ -1,0 +1,4 @@
+/ai-detector
+/model-detector
+*.safetensors
+.DS_Store

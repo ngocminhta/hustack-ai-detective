@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+transformers
+torch
+pycountry
+markdown
+pathlib
+pydantic
+gradio
